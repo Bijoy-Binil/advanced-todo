@@ -30,7 +30,7 @@ const navigate=useNavigate()
         icon: "success",
         title: "Login Successful!",
         text: `Welcome back, ${loginRes.data.user}`,
-        timer: 2000,
+        timer: 800,
         showConfirmButton: false,
       });
 

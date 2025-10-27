@@ -31,7 +31,7 @@ const RegisterPage = () => {
         title: "Registration Successful!",
         text: "Your account has been created successfully.",
         showConfirmButton: false,
-        timer: 2000,
+        timer: 500,
       });
 
       setTimeout(() => navigate("/"), 2000);
