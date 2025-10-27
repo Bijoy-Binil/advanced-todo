@@ -4,10 +4,12 @@ import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import RegsiterPage from "./pages/RegisterPage";
 import Footer from "./components/Footer";
+import AuthProvider from "./AuthProvider";
 
 function App() {
   return (
 <>
+<AuthProvider>
         <Navbar/>
       <Routes>
         <Route path="/" element={<LoginPage />} />
@@ -15,6 +17,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
         <Footer/>
+        </AuthProvider>
 </>
   );
 }

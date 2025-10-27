@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../AuthProvider";
 
 const Navbar = () => {
+  const {userName} = useContext(AuthContext)
   return (
     <nav className=" text-white ">
       <div className="container mx-auto  flex items-center justify-between py-12 px-8">
         {/* Left side - Logo */}
-        <Link to="/" className="text-xl  font-semibold">Todo App</Link >
+        <Link to="/dashboard" className="text-xl  font-semibold">Todo App</Link >
 
         {/* Right side - Links */}
         <div className="flex items-center gap-6 text-lg">
-          <Link to="/dashboard" className="hover:text-indigo-400">Dashboard</Link>
+          <h1 className="text-white">{userName}</h1>
+          <Link to="/dashboard" 
+          className="hover:text-indigo-400">Dashboard</Link>
           <Link to="/register" className="hover:text-indigo-400">Sign Up</Link>
           <Link to="/" className="hover:text-indigo-400">Sign In</Link>
         </div>

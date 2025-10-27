@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const baseUrl = "http://127.0.0.1:8000/api/";
+  const navigate = useNavigate();
 
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState({});
-const navigate=useNavigate()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = {
@@ -24,16 +25,36 @@ const navigate=useNavigate()
     try {
       const response = await axios.post(`${baseUrl}register/`, userData);
       console.log("✅ Registration successful:", response);
-      alert("User registered successfully!");
-      setSuccess(response.data);
-      navigate("/")
+
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful!",
+        text: "Your account has been created successfully.",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      setTimeout(() => navigate("/"), 2000);
     } catch (error) {
       console.error("❌ Something went wrong:", error);
       if (error.response?.data) {
         setErrors(error.response.data);
-        console.log(error.response.data);
+
+        Swal.fire({
+          icon: "error",
+          title: "Registration Failed",
+          text:
+            error.response.data.email?.[0] ||
+            error.response.data.password?.[0] ||
+            error.response.data.confirm_password?.[0] ||
+            "Please check your input and try again.",
+        });
       } else {
-        setErrors({ general: "An unexpected error occurred." });
+        Swal.fire({
+          icon: "error",
+          title: "Server Error",
+          text: "An unexpected error occurred. Please try again later.",
+        });
       }
     }
   };
@@ -129,7 +150,7 @@ const navigate=useNavigate()
                 </p>
               )}
             </div>
-          {success && <div className="alert alert-success">Registration successfull</div> }
+
             <button
               type="submit"
               className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg font-semibold transition duration-200"
