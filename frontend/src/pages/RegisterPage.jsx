@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const baseUrl = "http://127.0.0.1:8000/api/";
@@ -9,7 +10,8 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
-
+  const [success, setSuccess] = useState({});
+const navigate=useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = {
@@ -21,8 +23,10 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(`${baseUrl}register/`, userData);
-      console.log("✅ Registration successful:", response.data);
+      console.log("✅ Registration successful:", response);
       alert("User registered successfully!");
+      setSuccess(response.data);
+      navigate("/")
     } catch (error) {
       console.error("❌ Something went wrong:", error);
       if (error.response?.data) {
@@ -125,7 +129,7 @@ const RegisterPage = () => {
                 </p>
               )}
             </div>
-
+          {success && <div className="alert alert-success">Registration successfull</div> }
             <button
               type="submit"
               className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg font-semibold transition duration-200"

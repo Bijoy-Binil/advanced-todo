@@ -1,6 +1,36 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 const LoginPage = () => {
+  const baseUrl = "http://127.0.0.1:8000/api/";
+  const [username, setUserName] = useState("");
+
+  const [password, setPassword] = useState("");
+  const userData = {
+    username,
+    password,
+  };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${baseUrl}token/`, userData);
+      
+      localStorage.setItem("access",response.data.access)
+      localStorage.setItem("refresh",response.data.refresh)
+      console.log("response==>", response.data);
+    } catch (error) {
+      console.error("error");
+    }
+
+    try {
+      const response = await axios.post(`${baseUrl}login/`, userData);
+      console.log("response==>", response.data);
+      localStorage.setItem("username",response.data.user)
+      localStorage.setItem("isLoggedIn",response.data.user_login)
+    } catch (error) {
+      console.error("error");
+    }
+  };
   return (
     <div className="flex mr-70  flex-col md:flex-row min-h-screen bg-linear-to-br">
       <div className="flex flex-col flex-1 md:ml-64  items-center pt-12 px-4">
@@ -8,19 +38,21 @@ const LoginPage = () => {
           <h2 className="text-2xl font-semibold mb-2 text-center">Login to your account</h2>
           <p className="text-gray-400 mb-6 text-center">Welcome back!</p>
 
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email address
+              <label htmlFor="name" className="block text-sm font-medium mb-2">
+                Full Name
               </label>
               <input
-                type="email"
-                id="email"
+                type="text"
+                id="name"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-emerald-500"
-                placeholder="you@example.com"
+                placeholder="John Doe"
               />
+            
             </div>
-
             <div className="mb-6">
               <label htmlFor="password" className="block text-sm font-medium mb-2">
                 Password
@@ -28,6 +60,8 @@ const LoginPage = () => {
               <input
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-emerald-500"
                 placeholder="••••••••"
               />

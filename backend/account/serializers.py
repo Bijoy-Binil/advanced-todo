@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.http import JsonResponse
+
 # Create your models here.
 
 class UserSerialzier(serializers.ModelSerializer):
@@ -17,6 +20,31 @@ class UserSerialzier(serializers.ModelSerializer):
                  raise serializers.ValidationError({"email":"email already exist."})
             if password != confirm_password:
                 raise serializers.ValidationError({"password":"Passwords do not match."})
-            user = User.objects.create_user(password=password, **validated_data)
-            print("user==>",user)
-            return user   
+            user = User.objects.create_user(
+
+            password=password,
+            username=validated_data['username'],
+        )
+            return user
+    
+
+class LoginSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+
+        if not username or not password:
+            raise serializers.ValidationError({"detail": "Both username and password are required."})
+
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError({"detail": "Invalid username or password."})
+
+        attrs['user'] = user
+        return attrs
