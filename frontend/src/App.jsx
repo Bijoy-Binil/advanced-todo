@@ -5,6 +5,8 @@ import LoginPage from "./pages/LoginPage";
 import RegsiterPage from "./pages/RegisterPage";
 import Footer from "./components/Footer";
 import AuthProvider from "./AuthProvider";
+import PublicRoute from "./PublicRoute";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
@@ -12,9 +14,9 @@ function App() {
 <AuthProvider>
         <Navbar/>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/register" element={<RegsiterPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<PublicRoute><LoginPage /></PublicRoute>} />
+        <Route path="/register" element={<PublicRoute><RegsiterPage /></PublicRoute>} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
       </Routes>
         <Footer/>
         </AuthProvider>

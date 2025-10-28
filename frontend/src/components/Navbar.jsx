@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
 
 const Navbar = () => {
-  const {userName,handleLogout} = useContext(AuthContext)
+  const {userName,handleLogout,isLoggedIn} = useContext(AuthContext)
   return (
     <nav className=" text-white ">
       <div className="container mx-auto  flex items-center justify-between py-12 px-8">
@@ -15,9 +15,14 @@ const Navbar = () => {
           <h1 className="text-white">{userName}</h1>
           <Link to="/dashboard" 
           className="hover:text-indigo-400">Dashboard</Link>
-          <Link to="/register" className="hover:text-indigo-400">Sign Up</Link>
-          <Link to="/" className="hover:text-indigo-400">Sign In</Link>
+         { !isLoggedIn?(<>
+          <Link to="/" className="hover:text-indigo-400">Login </Link>
+          <Link to="/register" className="hover:text-indigo-400">Register</Link>
+         </>):(<>
+         
           <Link onClick={handleLogout} className="hover:text-indigo-400">Log Out</Link>
+         </>)}
+         
         </div>
       </div>
     </nav>

@@ -1,12 +1,15 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const baseUrl = "http://127.0.0.1:8000/api/";
   const [tasks, setTasks] = useState("");
   const [allTasks, setAllTasks] = useState([]);
   const [editId, setEditId] = useState(null);
-
+  const {userName,handleLogout,isLoggedIn} = useContext(AuthContext)
+const navigate=useNavigate()
   useEffect(() => {
     getTodos();
   }, []);
@@ -24,6 +27,9 @@ const Dashboard = () => {
   };
 
   const handleSubmit = async (e) => {
+    if(!isLoggedIn){
+      navigate('/')
+}
     e.preventDefault();
     const token = localStorage.getItem("access");
     const data = { tasks };
