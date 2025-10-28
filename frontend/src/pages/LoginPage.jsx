@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
@@ -24,8 +24,11 @@ const navigate=useNavigate()
       // ✅ 2. Login verification
       const loginRes = await axios.post(`${baseUrl}login/`, userData);
       localStorage.setItem("username", loginRes.data.user);
+      localStorage.setItem("userEmail", loginRes.data.email);
+      localStorage.setItem("userJoined", loginRes.data.joined);
       localStorage.setItem("isLoggedIn", loginRes.data.user_login);
-      navigate("/dashboard")
+   
+      <Navigate to="/dashboard" />
       Swal.fire({
         icon: "success",
         title: "Login Successful!",

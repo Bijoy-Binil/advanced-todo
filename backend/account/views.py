@@ -25,7 +25,7 @@ def user_login(request):
 
         user = authenticate(username=username, password=password)
         if user is not None:
-            return JsonResponse({"user_login": True, "user": user.username})
+            return JsonResponse({"user_login": True, "user": user.username,"email":user.email,"joined": user.date_joined.strftime("%Y-%m-%d")})
         return JsonResponse({"bool": False, "msg": "Invalid credentials"})
 
     return JsonResponse({"msg": "Only POST method allowed"})

@@ -6,7 +6,7 @@ const Navbar = () => {
   const {userName,handleLogout,isLoggedIn} = useContext(AuthContext)
   return (
     <nav className=" text-white ">
-      <div className="container mx-auto  flex items-center justify-between py-12 px-8">
+      <div className="container mx-auto  flex items-center justify-between py-12 px-20">
         {/* Left side - Logo */}
         <Link to="/dashboard" className="text-xl  font-semibold">Todo App</Link >
 
